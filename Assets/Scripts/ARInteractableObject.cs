@@ -28,17 +28,14 @@ public abstract class ARInteractableObject : MonoBehaviour
     protected void AddInteractable(ARInteractableObject interactable)
     {
         _interactables.Add(interactable);
-        interactable.ARObjectState = State.Active;
+        //interactable.ARObjectState = State.Active;
         SetState(State.Active);
     }
 
     protected void RemoveInteractable(ARInteractableObject interactable)
     {
         _interactables.Remove(interactable);
-        if (_interactables.Count == 0)
-        {
-            SetState(State.Idle);
-        }
+        if (_interactables.Count == 0) SetState(State.Idle);
     }
     protected virtual void SetState(State state)
     {

@@ -22,21 +22,21 @@ public class MultipleImagesTrackingManager : MonoBehaviour
     }
     private void OnDestory()
     {
-        _trackedImageManager.trackablesChanged.AddListener(OnImagesTrackedChanged);
+        _trackedImageManager.trackablesChanged.RemoveListener(OnImagesTrackedChanged);
     }
     private void SetupSceneElemnts()
     {
         foreach (var prefab in prefabsToSpawn)
         {
             var arObject = Instantiate(prefab, Vector3.zero, Quaternion.identity);
-                arObject.name = prefab.name;
-                arObject.gameObject.SetActive(false);
-                _arObjects.Add(arObject.name, arObject);
+            arObject.name = prefab.name;
+            arObject.gameObject.SetActive(false);
+            _arObjects.Add(arObject.name, arObject);
         }
     }
     private void OnImagesTrackedChanged(ARTrackablesChangedEventArgs<ARTrackedImage> eventArgs)
     {
-        foreach ( var trackedImage in eventArgs.added)
+        foreach (var trackedImage in eventArgs.added)
         {
             UpdateTrackedImages(trackedImage);
         }
@@ -52,14 +52,16 @@ public class MultipleImagesTrackingManager : MonoBehaviour
     private void UpdateTrackedImages(ARTrackedImage trackedImage)
     {
         if (trackedImage == null) return;
-        if(trackedImage.trackingState is TrackingState.Limited or TrackingState.None)
+        if (trackedImage.trackingState is TrackingState.Limited or TrackingState.None)
         {
             _arObjects[trackedImage.referenceImage.name].gameObject.SetActive(false);
             return;
         }
-
-        _arObjects[trackedImage.referenceImage.name].gameObject.SetActive(true);
-        _arObjects[trackedImage.referenceImage.name].transform.position = trackedImage.transform.position;
-        _arObjects[trackedImage.referenceImage.name].transform.rotation = trackedImage.transform.rotation;
+        if (prefabsToSpawn != null)
+        {
+            _arObjects[trackedImage.referenceImage.name].gameObject.SetActive(true);
+            _arObjects[trackedImage.referenceImage.name].transform.position = trackedImage.transform.position;
+            _arObjects[trackedImage.referenceImage.name].transform.rotation = trackedImage.transform.rotation;
+        }
+        }
     }
-}
