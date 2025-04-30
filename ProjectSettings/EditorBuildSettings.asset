@@ -8,10 +8,14 @@ EditorBuildSettings:
   - enabled: 0
     path: Assets/Scenes/First Single AR Tracked Image.unity
     guid: 99c9720ab356a0642a771bea13969a05
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/First Multiple AR Tracked Image.unity
     guid: 8767b45c6c11e54418c11a732f9d0dde
+  - enabled: 1
+    path: Assets/Scenes/First AR Surface detector.unity
+    guid: fa52f404ceeb0e445b7d01c0ad549d8a
   m_configObjects:
+    Unity.XR.Oculus.Settings: {fileID: 11400000, guid: a8dee4238f1348040b5c56ef8103dab9, type: 2}
     UnityEditor.XR.ARCore.ARCoreSettings: {fileID: 11400000, guid: 615dceb3aa31f294e9763ab11fa135af, type: 2}
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}
     com.unity.xr.arfoundation.simulation_settings: {fileID: 11400000, guid: 0af4b7661cef2fe43a4514bc21d7a3f2, type: 2}

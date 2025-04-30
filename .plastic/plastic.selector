@@ -1,0 +1,4 @@
+repository "AR Project Testing Fero@mf_WorldHunter@cloud"
+  path "/"
+    br "/main"
+    co "/main"
