@@ -1,16 +1,48 @@
+using System.Collections.Generic;
+using System.Runtime.CompilerServices;
+using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.XR.ARFoundation;
+using UnityEngine.XR.ARSubsystems;
+using EnhancedTouch = UnityEngine.InputSystem.EnhancedTouch;
 
+[RequireComponent(typeof(ARRaycastManager), typeof(ARPlaneManager))]
 public class PlaceObjectsInAR : MonoBehaviour
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    [SerializeField] private GameObject arObjectPrefab;
+    private ARRaycastManager aRRaycastManager;
+    private ARPlaneManager aRPlaneManager;
+    private List<ARRaycastHit> hits = new List<ARRaycastHit>();
+
+    private void Awake()
     {
-        
+        aRRaycastManager = GetComponent<ARRaycastManager>();
+        aRPlaneManager = GetComponent<ARPlaneManager>();
+    }
+    private void OnEnable()
+    {
+        EnhancedTouch.TouchSimulation.Enable();
+        EnhancedTouch.EnhancedTouchSupport.Enable();
+        EnhancedTouch.Touch.onFingerDown += FingerDown;
+    }
+    private void OnDisable()
+    {
+        EnhancedTouch.TouchSimulation.Disable();
+        EnhancedTouch.EnhancedTouchSupport.Disable();
+        EnhancedTouch.Touch.onFingerDown -= FingerDown;
     }
 
-    // Update is called once per frame
-    void Update()
+    private void FingerDown(EnhancedTouch.Finger finger)
     {
-        
+        if (finger.index != 0) return;
+        if (aRRaycastManager.Raycast(finger.currentTouch.screenPosition, hits, TrackableType.PlaneWithinPolygon))
+        {
+            foreach(ARRaycastHit hit in hits)
+            {
+                Pose pose = hit.pose;
+                GameObject obj = Instantiate(arObjectPrefab,pose.position,pose.rotation);
+
+            }
+        }
     }
 }
